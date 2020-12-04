@@ -32,8 +32,6 @@ type Mutation {
 
   like(tweetId: ID!): Boolean!
 
-  like(tweetId: ID!): Boolean!
-
   retweet(tweetId: ID!): Boolean!
 
   unRetweet(tweetId: ID!): Boolean!
@@ -100,8 +98,8 @@ type OtherProfile implements IProfile {
   bio: String
   location: String
   website: AWSURL
-  birthDate: AWSDATE
-  createdAt: AWSDATETIME!
+  birthDate: AWSDate
+  createdAt: AWSDateTime!
   tweets: TweetsPage!
   followersCount: Int!
   followingCount: Int!
@@ -144,6 +142,9 @@ type Reply implements ITweet {
 }
 
 type ReTweet implements ITweet {
+  id: ID!
+  profile: IProfile!
+  createdAt: AWSDateTime!
   retweetOf: ITweet!
 
 }
