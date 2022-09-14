@@ -2,8 +2,9 @@ const DynamoDB = require('aws-sdk/clients/dynamodb')
 const DocumentClient = new DynamoDB.DocumentClient()
 const Chance = require('chance')
 const chance = new Chance()
+require('dotenv').config()
 
-const { USER_TABLE } = process.env
+const { USERS_TABLE } = process.env.USERS_TABLE
 
 module.exports.handler = async (event) => {
     if (event.triggerSource === 'PostConfirmation_ConfirmSignUp') {
@@ -21,7 +22,7 @@ module.exports.handler = async (event) => {
             likesCounts: 0
         }
         await DocumentClient.put({
-            TableName: USER_TABLE,
+            TableName: process.env.USERS_TABLE,
             Item: user,
             ConditionExpression: 'attribute_not_exists(id)'
         }).promise()

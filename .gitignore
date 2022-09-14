@@ -4,3 +4,7 @@ jspm_packages
 
 # Serverless directories
 .serverless
+.env
+
+# For Apple users 
+.DS_Store

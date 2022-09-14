@@ -1,20 +1,25 @@
-const chance = require('chance').Chance()
+require('dotenv').config()
+const AWS = require('aws-sdk')
 
-const a_random_user = () => {
-    const firstName = chance.first({ nationality: 'en' })
-    const lastName = chance.last({ nationality: 'en' })
-    const suffix = chance.string({ length: 4, pool: 'abcdefghijklmnopqrstuvwxyz' }) // restricted to lowercase to avoid cognito invalid issues
-    const name = `${firstName} ${lastName} ${suffix}`
-    const password = chance.string({ length: 8 })
-    const email = `${firstName}-${lastName}-${suffix}@appsynccourse.com`
+const user_exists_in_UsersTable = async (id) => {
+    const DynamoDB = new AWS.DynamoDB.DocumentClient()
 
-    return {
-        name,
-        password,
-        email
-    }
+    console.log(`looking for user [${id}] in table [${process.env.USERS_TABLE}]`)
+    const resp = DynamoDB.get({
+        TableName: process.env.USERS_TABLE,
+        Key: {
+            id
+        }
+    }).promise()
+
+    const item = (await resp).Item
+    expect(item).toBeTruthy()
+
+    
+    
+    return item
 }
 
 module.exports = {
-    a_random_user
+    user_exists_in_UsersTable
 }
